@@ -17,14 +17,14 @@
     },
     "scriptUrl":{
       "type": "string",
-      "defaultValue": "http://gitlab.devopshub.cn/leixu/deploy-training-env/blob/master/InstallDockerAndPrivateRegistry.sh",
+      "defaultValue": "https://raw.githubusercontent.com/WilsonBoGH/azure-template/master/InstallDockerAndPrivateRegistry.sh",
       "metadata": {
         "description": "The url of the script that install docker and swarm."
       } 
     },
-    "installDockerScript ":{
+    "scriptUrl2 ":{
       "type": "string",
-      "defaultValue": "http://gitlab.devopshub.cn/leixu/deploy-training-env/blob/master/InstallDockerAndPrivateRegistry.sh",
+      "defaultValue": "https://raw.githubusercontent.com/WilsonBoGH/azure-template/master/InstallDocker.sh",
       "metadata": {
         "description": "The url of the script that install docker and docker-compose."
       }
@@ -615,14 +615,14 @@
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
                         "enabled": false,
-                        "storageUri": "[concat('https', '://', variables('storageAccountName'), '.blob.core.windows.net', '/')]"
+                        "storageUri": "[concat('https', '://', concat(variables('storageAccountName'), 'rd'), '.blob.core.windows.net', '/')]"
                     }
                 }
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
                 "[resourceId('Microsoft.Network/networkInterfaces', variables('operNetworkInterfaceName'))]",
-                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('storageAccountName'), 'rd'))]"
             ]
         },
         
@@ -679,7 +679,7 @@
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
                         "enabled": false,
-                        "storageUri": "[concat('https', '://', variables('storageAccountName'), '.blob.core.windows.net', '/')]"
+                        "storageUri": "[concat('https', '://', concat(variables('storageAccountName'), 'rd'), '.blob.core.windows.net', '/')]"
                     }
                 }
             },
@@ -960,12 +960,27 @@
             "dependsOn": []
         },
 
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[concat(variables('storageAccountName'), 'rd')]",
+            "apiVersion": "2016-01-01",
+            "location": "[resourceGroup().location]",
+            "tags": {},
+            "properties": {},
+            "dependsOn": []
+        },
+
          
 
 
           {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(variables('vmNameOperation'), '/InstallDockerAndPrivateRegistry')]",
+            "name": "[concat(variables('vmNameOperation'), '/InstallDocker')]",
             "apiVersion": "[variables('apiVersion')]",
             "location": "[resourceGroup().location]",
             "copy": {
@@ -981,15 +996,15 @@
                       "typeHandlerVersion": "1.5",
                       "settings": {
                           "fileUris": [
-                              "http://gitlab.devopshub.cn/leixu/deploy-training-env/blob/master/InstallDockerAndPrivateRegistry.sh"
+                              "https://raw.githubusercontent.com/WilsonBoGH/azure-template/master/InstallDocker.sh"
                           ],
-                          "commandToExecute": "[concat('/bin/bash -c \"/bin/bash InstallDockerAndPrivateRegistry.sh ', variables('clusterInstallParameters'), ' >> /var/log/azure/cluster-bootstrap.log 2>&1\"')]"
+                          "commandToExecute": "[concat('/usr/bin/nohup /bin/bash -c \"/bin/bash InstallDocker.sh ', variables('adminUsername'), ' >> /var/log/azure/cluster-bootstrap.log 2>&1 &\" &')]"
                       }
                   }
           },
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(variables('vmNameTest'), '/InstallDockerAndPrivateRegistry')]",
+            "name": "[concat(variables('vmNameTest'), '/InstallDocker')]",
             "apiVersion": "[variables('apiVersion')]",
             "location": "[resourceGroup().location]",
             "copy": {
@@ -1005,9 +1020,9 @@
                       "typeHandlerVersion": "1.5",
                       "settings": {
                           "fileUris": [
-                              "http://gitlab.devopshub.cn/leixu/deploy-training-env/blob/master/InstallDockerAndPrivateRegistry.sh"
+                              "https://raw.githubusercontent.com/WilsonBoGH/azure-template/master/InstallDocker.sh"
                           ],
-                          "commandToExecute": "[concat('/bin/bash -c \"/bin/bash InstallDockerAndPrivateRegistry.sh ', variables('clusterInstallParameters'), ' >> /var/log/azure/cluster-bootstrap.log 2>&1\"')]"
+                          "commandToExecute": "[concat('/usr/bin/nohup /bin/bash -c \"/bin/bash InstallDocker.sh ', variables('adminUsername'), ' >> /var/log/azure/cluster-bootstrap.log 2>&1 &\" &')]"
                       }
                   }
           }
