@@ -617,14 +617,14 @@
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
                         "enabled": false,
-                        "storageUri": "[concat('https', '://', concat(variables('storageAccountName'), 'rd'), '.blob.core.windows.net', '/')]"
+                        "storageUri": "[concat('https', '://', variables('storageAccountName'), '.blob.core.windows.net', '/')]"
                     }
                 }
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
                 "[resourceId('Microsoft.Network/networkInterfaces', variables('operNetworkInterfaceName'))]",
-                "[resourceId('Microsoft.Storage/storageAccounts', concat(variables('storageAccountName'), 'rd'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
             ]
         },
         
@@ -681,7 +681,7 @@
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
                         "enabled": false,
-                        "storageUri": "[concat('https', '://', concat(variables('storageAccountName'), 'rd'), '.blob.core.windows.net', '/')]"
+                        "storageUri": "[concat('https', '://', variables('storageAccountName'), '.blob.core.windows.net', '/')]"
                     }
                 }
             },
@@ -961,25 +961,7 @@
             "properties": {},
             "dependsOn": []
         },
-
-        {
-            "type": "Microsoft.Storage/storageAccounts",
-            "sku": {
-                "name": "Standard_LRS",
-                "tier": "Standard"
-            },
-            "kind": "Storage",
-            "name": "[concat(variables('storageAccountName'), 'rd')]",
-            "apiVersion": "2016-01-01",
-            "location": "[resourceGroup().location]",
-            "tags": {},
-            "properties": {},
-            "dependsOn": []
-        },
-
-         
-
-
+        
           {
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "name": "[concat(variables('vmNameOperation'), '/InstallDocker')]",
