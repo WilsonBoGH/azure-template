@@ -1,0 +1,49 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "publicIp": {
+      "type": "string",
+      "metadata": {
+        "description": "Registry IP."
+      }
+    },
+    "vmName": {
+      "type": "string"
+    },
+    "scriptUrl": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "apiVersion": "2015-06-15"
+  },
+  "resources": [
+    {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(parameters('vmName'), '/ConfigRegistry')]",
+            "apiVersion": "[variables('apiVersion')]",
+            "location": "[resourceGroup().location]",
+            "copy": {
+              "name": "extensionOperation",
+              "count": 1
+            },
+            "dependsOn": [
+              "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+            ],
+                  "properties": {
+                      "publisher": "Microsoft.OSTCExtensions",
+                      "type": "CustomScriptForLinux",
+                      "typeHandlerVersion": "1.5",
+                      "settings": {
+                          "fileUris": [
+                              "[parameters('scriptUrl')]"
+                          ],
+                          "commandToExecute": "[concat('/bin/bash -c \"/bin/bash ConfigRegistry.sh ', parameters('publicIp') ,' >> /var/log/azure/configdocker.log 2>&1\"')]"
+                      }
+                  }
+          }
+  ],
+  "outputs": { 
+  }
+}
