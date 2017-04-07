@@ -25,6 +25,7 @@ MASTERPREFIX=${2}
 MASTERFIRSTADDR=${3}
 AZUREUSER=${4}
 BASESUBNET=${5}
+OPERDNS=${6}
 VMNAME=`hostname`
 VMNUMBER=`echo $VMNAME | sed 's/.*[^0-9]\([0-9]\+\)*$/\1/'`
 VMPREFIX=`echo $VMNAME | sed 's/\(.*[^0-9]\)*[0-9]\+$/\1/'`
@@ -160,7 +161,7 @@ if isagent ; then
 fi
 
 # Setup Private Registry
-echo "{ \"insecure-registries\":[\"harbor.devopshub.cn\",\"localhost:5000\"] }" | sudo tee /etc/docker/daemon.json
+echo "{ \"insecure-registries\":[\"harbor.devopshub.cn\",\"$OPERDNS:5000\"] }" | sudo tee /etc/docker/daemon.json
 
 echo "Installing docker compose"
 curl -L https://get.daocloud.io/docker/compose/releases/download/1.8.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
