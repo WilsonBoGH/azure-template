@@ -14,7 +14,7 @@ sudo usermod -aG docker $AZUREUSER
 sudo curl -L "https://github.com/docker/compose/releases/download/1.11.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
-echo "{ \"insecure-registries\":[\"harbor.devopshub.cn\",\"operation:82\"] }" | sudo tee /etc/docker/daemon.json
+echo "{ \"insecure-registries\":[\"operation:82\"] }" | sudo tee /etc/docker/daemon.json
 sudo service docker restart
 
 printf "\nCiphers aes128-cbc,aes192-cbc,aes256-cbc,aes128-ctr,aes192-ctr,aes256-ctr,3des-cbc,arcfour128,arcfour256,arcfour,blowfish-cbc,cast128-cbc" | sudo tee -a /etc/ssh/sshd_config
