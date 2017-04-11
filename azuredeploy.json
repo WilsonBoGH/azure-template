@@ -692,7 +692,7 @@
                     {
                         "name": "ipconfigOper",
                         "properties": {
-                            "privateIPAddress": "10.0.0.2",
+                            "privateIPAddress": "10.0.0.101",
                             "privateIPAllocationMethod": "Static",
                             "publicIPAddress": {
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('operIpName'))]"
@@ -729,7 +729,7 @@
                     {
                         "name": "ipconfigTest",
                         "properties": {
-                            "privateIPAddress": "10.0.0.3",
+                            "privateIPAddress": "10.0.0.102",
                             "privateIPAllocationMethod": "Static",
                             "publicIPAddress": {
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('testIpName'))]"
