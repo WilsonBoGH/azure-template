@@ -91,8 +91,8 @@
     "sshKeyPath": "[concat('/home/', variables('adminUsername'), '/.ssh/authorized_keys')]",
 
 
-    "vmNameOperation": "[concat('docker-training-operation-', parameters('studentName'))]",
-    "vmNameTest": "[concat('docker-ttraining-test-', parameters('studentName'))]",
+    "vmNameOperation": "operation",
+    "vmNameTest": "test",
     "vmSizeOper": "Standard_D2_v2",
     "vmSizeTest": "Standard_D2_v2",
     "vmAdminUserName": "azureuser",    
@@ -167,10 +167,7 @@
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('virtualNetworkName')]",
       "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[variables('mastersNsgID')]",
-        "[variables('nodesNsgID')]"
-      ],
+      "dependsOn": [],
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -182,19 +179,13 @@
           {
             "name": "[variables('subnetNameMasters')]",
             "properties": {
-              "addressPrefix": "[variables('subnetPrefixMasters')]",
-              "networkSecurityGroup": {
-                "id": "[variables('mastersNsgID')]"
-              }
+              "addressPrefix": "[variables('subnetPrefixMasters')]"
             }
           },
           {
             "name": "[variables('subnetNameNodes')]",
             "properties": {
-              "addressPrefix": "[variables('subnetPrefixNodes')]",
-              "networkSecurityGroup": {
-                "id": "[variables('nodesNsgID')]"
-              }
+              "addressPrefix": "[variables('subnetPrefixNodes')]"
             }
           }
         ]
@@ -629,7 +620,6 @@
         },
         
         {
-            "comments": "已从资源实现通用:“/subscriptions/49f6e94f-276e-42fc-b48a-74a96fff5cc6/resourceGroups/ls-docker-traing-demo-v2/providers/Microsoft.Compute/virtualMachines/dt-test”。",
             "type": "Microsoft.Compute/virtualMachines",
             "name": "[variables('vmNameTest')]",
             "apiVersion": "2016-04-30-preview",
@@ -702,13 +692,13 @@
                     {
                         "name": "ipconfigOper",
                         "properties": {
-                            "privateIPAddress": "10.1.1.4",
-                            "privateIPAllocationMethod": "Dynamic",
+                            "privateIPAddress": "10.0.0.2",
+                            "privateIPAllocationMethod": "Static",
                             "publicIPAddress": {
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('operIpName'))]"
                             },
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vNetNameDev')), '/subnets/default')]"
+                                "id": "[variables('subnetRefMaster')]"
                             }
                         }
                     }
@@ -723,7 +713,7 @@
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', variables('operIpName'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks', variables('vNetNameDev'))]",
+                "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
                 "[resourceId('Microsoft.Network/networkSecurityGroups', variables('operNsgId'))]"
             ]
         },
@@ -739,13 +729,13 @@
                     {
                         "name": "ipconfigTest",
                         "properties": {
-                            "privateIPAddress": "10.1.1.5",
-                            "privateIPAllocationMethod": "Dynamic",
+                            "privateIPAddress": "10.0.0.3",
+                            "privateIPAllocationMethod": "Static",
                             "publicIPAddress": {
                                 "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('testIpName'))]"
                             },
                             "subnet": {
-                                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vNetNameDev')), '/subnets/default')]"
+                                "id": "[variables('subnetRefMaster')]"
                             }
                         }
                     }
@@ -760,7 +750,7 @@
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', variables('testIpName'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks', variables('vNetNameDev'))]",
+                "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]",
                 "[resourceId('Microsoft.Network/networkSecurityGroups', variables('testNsgId'))]"
             ]
         },
@@ -791,11 +781,50 @@
                         "properties": {
                             "protocol": "*",
                             "sourcePortRange": "*",
-                            "destinationPortRange": "8080",
+                            "destinationPortRange": "81",
                             "sourceAddressPrefix": "*",
                             "destinationAddressPrefix": "*",
                             "access": "Allow",
                             "priority": 1020,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "registry",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "82",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1100,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "cadvosior",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "83",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1110,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "logstash",
+                        "properties": {
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "5000",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 1120,
                             "direction": "Inbound"
                         }
                     },
