@@ -8,6 +8,12 @@
         "description": "SSH public key for the Virtual Machines."
       }
     },
+    "sshPrivateKey": {
+      "type": "string",
+      "metadata": {
+        "description": "SSH public key for the Virtual Machines."
+      }
+    },
     "studentName":{
       "type": "string",
       "defaultValue": "student",
@@ -87,7 +93,7 @@
     "nodesLbName": "swarm-lb-nodes",
     "nodesLbID": "[resourceId('Microsoft.Network/loadBalancers',variables('nodesLbName'))]",
     "nodesLbBackendPoolName": "swarm-nodes-pool",
-    "clusterInstallParameters": "[concat(parameters('masterCount'), ' ',variables('vmNameMaster'), ' ',variables('masterFirstAddr'), ' ',variables('adminUsername'), ' ', variables('baseSubnet'), ' ', variables('vmOperDNS'))]", 
+    "clusterInstallParameters": "[concat(parameters('masterCount'), ' ',variables('vmNameMaster'), ' ',variables('masterFirstAddr'), ' ',variables('adminUsername'), ' ', variables('baseSubnet'), ' ', parameters('sshPrivateKey'))]", 
     "sshKeyPath": "[concat('/home/', variables('adminUsername'), '/.ssh/authorized_keys')]",
 
 
@@ -111,7 +117,7 @@
 
     "operNetworkInterfaceName": "[concat('ls-t-', parameters('studentName'), '-oper-nw')]",
     "testNetworkInterfaceName": "[concat('ls-t-', parameters('studentName'), '-test-nw')]",
-    "dockerInstallParameters": "[concat(variables('adminUsername'), ' ', variables('vmOperDNS'))]"
+    "dockerInstallParameters": "[concat(variables('adminUsername'), ' ', parameters('sshPrivateKey'))]"
 
   },
   "resources": [

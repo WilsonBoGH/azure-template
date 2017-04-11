@@ -1,7 +1,7 @@
 #!/bin/bash
 
 AZUREUSER=${1}
-OPERDNS=${2}
+SSHKEY=${2}
 
 sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -24,3 +24,5 @@ printf "\nKexAlgorithms diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,d
 service ssh restart
 
 sudo apt-get install openjdk-8-jdk
+
+echo "$SSHKEY" | sudo tee /home/azureuser/.ssh/id_rsa

@@ -25,7 +25,7 @@ MASTERPREFIX=${2}
 MASTERFIRSTADDR=${3}
 AZUREUSER=${4}
 BASESUBNET=${5}
-OPERDNS=${6}
+SSHKEY=${6}
 VMNAME=`hostname`
 VMNUMBER=`echo $VMNAME | sed 's/.*[^0-9]\([0-9]\+\)*$/\1/'`
 VMPREFIX=`echo $VMNAME | sed 's/\(.*[^0-9]\)*[0-9]\+$/\1/'`
@@ -207,3 +207,5 @@ echo "completed docker swarm cluster configuration"
  printf "\nKexAlgorithms diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group1-sha1,curve25519-sha256@libssh.org" | sudo tee -a /etc/ssh/sshd_config
 
 service ssh restart
+
+echo "$SSHKEY" | sudo tee /home/azureuser/.ssh/id_rsa
