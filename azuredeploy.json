@@ -993,7 +993,7 @@
         
           {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(variables('vmNameOperation'), '/InstallDocker')]",
+            "name": "[concat(variables('vmNameOperation'), '/InstallDockerOnOper')]",
             "apiVersion": "[variables('apiVersion')]",
             "location": "[resourceGroup().location]",
             "copy": {
@@ -1009,9 +1009,9 @@
                       "typeHandlerVersion": "1.5",
                       "settings": {
                           "fileUris": [
-                              "https://raw.githubusercontent.com/WilsonBoGH/azure-template/master/InstallDocker.sh"
+                              "https://raw.githubusercontent.com/WilsonBoGH/azure-template/master/InstallDockerOnOper.sh"
                           ],
-                          "commandToExecute": "[concat('/usr/bin/nohup /bin/bash -c \"/bin/bash InstallDocker.sh ', variables('dockerInstallParameters'), ' >> /var/log/azure/cluster-bootstrap.log 2>&1 &\" &')]"
+                          "commandToExecute": "[concat('/usr/bin/nohup /bin/bash -c \"/bin/bash InstallDockerOnOper.sh ', variables('dockerInstallParameters'), ' >> /var/log/azure/cluster-bootstrap.log 2>&1 &\" &')]"
                       }
                   }
           },
