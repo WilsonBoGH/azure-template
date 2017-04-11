@@ -161,7 +161,7 @@ if isagent ; then
 fi
 
 # Setup Private Registry
-echo "{ \"insecure-registries\":[\"harbor.devopshub.cn\",\"$OPERDNS:5000\"] }" | sudo tee /etc/docker/daemon.json
+echo "{ \"insecure-registries\":[\"harbor.devopshub.cn\",\"operation:82\"] }" | sudo tee /etc/docker/daemon.json
 
 echo "Installing docker compose"
 curl -L https://get.daocloud.io/docker/compose/releases/download/1.8.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
