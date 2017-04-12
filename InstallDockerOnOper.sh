@@ -24,7 +24,7 @@ printf "\nKexAlgorithms diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,d
 
 service ssh restart
 
-sudo apt-get install openjdk-8-jdk
+sudo apt-get install openjdk-8-jdk -y
 
 echo "$SSHKEY" | sudo tee /home/azureuser/.ssh/id_rsa
 
