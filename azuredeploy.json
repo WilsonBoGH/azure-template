@@ -218,7 +218,49 @@
               "priority": 1000,
               "direction": "Inbound"
             }
-          }
+          },
+          {
+            "name": "vote",
+            "properties": {
+              "description": "",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "5000",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1010,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "result",
+            "properties": {
+              "description": "",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "5001",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1020,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "vir",
+            "properties": {
+              "description": "",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8080",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 1030,
+              "direction": "Inbound"
+            }
+          } 
         ]
       }
     },
@@ -330,6 +372,72 @@
         "protocol": "tcp",
         "frontendPort": "[copyIndex(2200)]",
         "backendPort": 22,
+        "enableFloatingIP": false
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+      "name": "[concat(variables('mastersLbName'), '/', 'vote-', variables('vmNameMaster'), copyIndex())]",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "lbNatLoopMaster",
+        "count": "[parameters('masterCount')]"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Network/loadBalancers/', variables('mastersLbName'))]"
+      ],
+      "properties": {
+        "frontendIPConfiguration": {
+          "id": "[variables('mastersLbIPConfigID')]"
+        },
+        "protocol": "tcp",
+        "frontendPort": 5000,
+        "backendPort": 5000,
+        "enableFloatingIP": false
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+      "name": "[concat(variables('mastersLbName'), '/', 'result-', variables('vmNameMaster'), copyIndex())]",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "lbNatLoopMaster",
+        "count": "[parameters('masterCount')]"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Network/loadBalancers/', variables('mastersLbName'))]"
+      ],
+      "properties": {
+        "frontendIPConfiguration": {
+          "id": "[variables('mastersLbIPConfigID')]"
+        },
+        "protocol": "tcp",
+        "frontendPort": 5001,
+        "backendPort": 5001,
+        "enableFloatingIP": false
+      }
+    },
+    {
+      "apiVersion": "2015-06-15",
+      "type": "Microsoft.Network/loadBalancers/inboundNatRules",
+      "name": "[concat(variables('mastersLbName'), '/', 'vir-', variables('vmNameMaster'), copyIndex())]",
+      "location": "[resourceGroup().location]",
+      "copy": {
+        "name": "lbNatLoopMaster",
+        "count": "[parameters('masterCount')]"
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Network/loadBalancers/', variables('mastersLbName'))]"
+      ],
+      "properties": {
+        "frontendIPConfiguration": {
+          "id": "[variables('mastersLbIPConfigID')]"
+        },
+        "protocol": "tcp",
+        "frontendPort": 8080,
+        "backendPort": 8080,
         "enableFloatingIP": false
       }
     },
