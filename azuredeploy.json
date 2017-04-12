@@ -93,7 +93,7 @@
     "nodesLbName": "swarm-lb-nodes",
     "nodesLbID": "[resourceId('Microsoft.Network/loadBalancers',variables('nodesLbName'))]",
     "nodesLbBackendPoolName": "swarm-nodes-pool",
-    "clusterInstallParameters": "[concat(parameters('masterCount'), ' ',variables('vmNameMaster'), ' ',variables('masterFirstAddr'), ' ',variables('adminUsername'), ' ', variables('baseSubnet'), ' ', parameters('sshPrivateKey'))]", 
+    "clusterInstallParameters": "[concat(parameters('masterCount'), ' ',variables('vmNameMaster'), ' ',variables('masterFirstAddr'), ' ',variables('adminUsername'), ' ', variables('baseSubnet'), ' ', parameters('sshPrivateKey'), ' ', parameters('sshPublicKey'))]", 
     "sshKeyPath": "[concat('/home/', variables('adminUsername'), '/.ssh/authorized_keys')]",
 
 
@@ -117,7 +117,8 @@
 
     "operNetworkInterfaceName": "[concat('ls-t-', parameters('studentName'), '-oper-nw')]",
     "testNetworkInterfaceName": "[concat('ls-t-', parameters('studentName'), '-test-nw')]",
-    "dockerInstallParameters": "[concat(variables('adminUsername'), ' ', parameters('sshPrivateKey'))]"
+    "dockerInstallParameters": "[concat(variables('adminUsername'), ' ', parameters('sshPrivateKey'))]",
+    "dockerInstallParametersOnOper": "[concat(variables('adminUsername'), ' ', parameters('sshPrivateKey'), ' ', parameters('sshPublicKey'))]"
 
   },
   "resources": [
@@ -1017,7 +1018,7 @@
                           "fileUris": [
                               "https://raw.githubusercontent.com/WilsonBoGH/azure-template/master/InstallDockerOnOper.sh"
                           ],
-                          "commandToExecute": "[concat('/usr/bin/nohup /bin/bash -c \"/bin/bash InstallDockerOnOper.sh ', variables('dockerInstallParameters'), ' >> /var/log/azure/cluster-bootstrap.log 2>&1 &\" &')]"
+                          "commandToExecute": "[concat('/usr/bin/nohup /bin/bash -c \"/bin/bash InstallDockerOnOper.sh ', variables('dockerInstallParametersOnOper'), ' >> /var/log/azure/cluster-bootstrap.log 2>&1 &\" &')]"
                       }
                   }
           },

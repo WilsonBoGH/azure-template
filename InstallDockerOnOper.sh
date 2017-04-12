@@ -2,6 +2,7 @@
 
 AZUREUSER=${1}
 SSHKEY=${2}
+SSHPUBKEY=${3}
 
 sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -26,3 +27,5 @@ service ssh restart
 sudo apt-get install openjdk-8-jdk
 
 echo "$SSHKEY" | sudo tee /home/azureuser/.ssh/id_rsa
+
+echo "$SSHPUBKEY" | sudo tee /home/azureuser/.ssh/id_rsa.pub

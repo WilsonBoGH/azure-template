@@ -26,6 +26,7 @@ MASTERFIRSTADDR=${3}
 AZUREUSER=${4}
 BASESUBNET=${5}
 SSHKEY=${6}
+SSHPUBKEY=${7}
 VMNAME=`hostname`
 VMNUMBER=`echo $VMNAME | sed 's/.*[^0-9]\([0-9]\+\)*$/\1/'`
 VMPREFIX=`echo $VMNAME | sed 's/\(.*[^0-9]\)*[0-9]\+$/\1/'`
@@ -209,3 +210,5 @@ echo "completed docker swarm cluster configuration"
 service ssh restart
 
 echo "$SSHKEY" | sudo tee /home/azureuser/.ssh/id_rsa
+
+echo "$SSHPUBKEY" | sudo tee /home/azureuser/.ssh/id_rsa.pub
