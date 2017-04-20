@@ -208,7 +208,3 @@ echo "completed docker swarm cluster configuration"
  printf "\nKexAlgorithms diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group1-sha1,curve25519-sha256@libssh.org" | sudo tee -a /etc/ssh/sshd_config
 
 service ssh restart
-
-echo "$SSHKEY" | sudo tee /home/azureuser/.ssh/id_rsa
-
-echo "$SSHPUBKEY" | sudo tee /home/azureuser/.ssh/id_rsa.pub
