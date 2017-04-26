@@ -103,7 +103,7 @@
     "vmSizeTest": "Standard_A2_v2",
     "vmAdminUserName": "azureuser",    
     
-    "storageAccountName": "[concat('lstraining', parameters('studentName'), 'sto')]",
+    "storageAccountName": "[concat('lstrain', uniquestring(resourceGroup().id))]",
     "vNetNameDev": "[concat('ls-t-', parameters('studentName'), '-vnet-dev')]",
     "vNetNameSwarm": "[concat('ls-t-', parameters('studentName'), '-vnet-swarm')]",
     "operIpName": "[concat('ls-t-', parameters('studentName'), '-vnet-oper')]",
