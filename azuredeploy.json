@@ -109,8 +109,8 @@
     "operIpName": "operation-ip",
     "testIpName": "test-ip",
 
-    "operDomainNameLabel": "[concat('oper-pubIp-', uniqueString(resourceGroup().id, deployment().name), '.eastasia.cloudapp.azure.com')]",
-    "testDomainNameLabel": "[concat('test-pubIp-', uniqueString(resourceGroup().id, deployment().name), '.eastasia.cloudapp.azure.com')]",
+    "operDomainNameLabel": "[concat('oper-pubip-', uniqueString(resourceGroup().id, deployment().name), '.eastasia.cloudapp.azure.com')]",
+    "testDomainNameLabel": "[concat('test-pubip-', uniqueString(resourceGroup().id, deployment().name), '.eastasia.cloudapp.azure.com')]",
     "testNsgId": "[concat('ls-t-', parameters('studentName'), '-test-nsg')]",
     "operNsgId": "[concat('ls-t-', parameters('studentName'), '-oper-nsg')]",
 
